@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from './Input'
 import { api } from '../api/api'
 
 const CreateItem = () => {
+const navigate = useNavigate()
     const handleSubmit = async (e) => {
 e.preventDefault()
+
+
 
 const item = {
 title: e.target.title.value,
@@ -13,7 +16,8 @@ price: e.target.price.value,
 imageUrl: e.target.imageUrl.value
 }
 try {
-    await api.sendItem(item)
+  const data = await api.sendItem(item)
+  navigate(`/item/${data.data.id}`)
 } catch (error) {
 console.error(error)
 }

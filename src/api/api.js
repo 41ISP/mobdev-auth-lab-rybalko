@@ -42,10 +42,17 @@ return res
 
 }
 
+const getItemDetails = async (item) => {
+const res = await apiInstance.get('/items-card', item)
+return res
+
+}
+
 export const api = {
 registerUser,
 loginUser,
 getItems,
-sendItem
+sendItem,
+getItemDetails
 
 }

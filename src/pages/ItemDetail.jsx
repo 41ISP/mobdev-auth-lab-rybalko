@@ -1,10 +1,41 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Input from "../components/Input"
 import Button from "../components/Button"
+import { useItemStore } from "../store/useItemStore"
+import { useEffect, useState } from "react"
 
 const ItemDetail = () => {
     const handleBid = () => {}
-    
+    const { id} = useParams()
+    const items = useItemStore()
+    const getItems = useItemStore()
+    const [isLoading, setIsLoading] = useState(false)
+const [error, setError] = useState(null)
+const [timerId, setTimerId] = useState(undefined)
+
+    useEffect(() => {
+    const load = async () => {
+    setIsLoading(true)
+    try {
+    await getItems()
+    } catch (error) {
+    console.error(error)
+    setError(error.item || 'Что-то пошло не так')
+    } finally {
+    setIsLoading(false)
+}
+}
+    load()
+    setTimerId(setInterval(() => {
+    try {getItems()} catch (error) {}
+     
+    },10000))
+
+    return () => {
+
+    clearInterval(timerId)}
+    }, [])
+
     return (
         <div className="container">
 
@@ -13,30 +44,30 @@ const ItemDetail = () => {
             <div class="item-detail">
                 <div class="item-header">
                     <div>
-                         <img src={ItemShow.imageUrl} class="item-image-large" />
+                         <img src={items.imageUrl} class="item-image-large" />
                     </div>
 
                     <div class="item-info">
-                        <span class="item-status">{ItemShow.status}</span>
+                        <span class="item-status">{items.status}</span>
                             
-                        <h1 class="item-title-large">{ItemShow.title}</h1>
+                        <h1 class="item-title-large">{items.title}</h1>
                             
                         <div class="item-seller-info">
                             <div class="seller-avatar">TS</div>
                             <div class="seller-details">
-                                <div class="seller-name">{ItemShow.username}</div>
-                                <div class="seller-date">{ItemShow.createdAt}</div>
+                                <div class="seller-name">{items.username}</div>
+                                <div class="seller-date">{items.createdAt}</div>
                             </div>
                         </div>
 
                         <div class="item-description-full">
-                            {ItemShow.description}
+                            {items.description}
                         </div>
 
                         <div class="price-section">
                             <div class="starting-price">Начальная цена:</div>
-                            <div class="current-price">{ItemShow.price}</div>
-                            <div class="highest-bid">Текущая ставка: {ItemShow.highestBid}</div>
+                            <div class="current-price">{items.price}</div>
+                            <div class="highest-bid">Текущая ставка: {items.shighestBid}</div>
 
                             <form class="bid-form" onSubmit={handleBid}>
                                 <Input 
@@ -44,7 +75,7 @@ const ItemDetail = () => {
                                     name= "bidInput"
                                     class="bid-input" 
                                     placeholder="Введите вашу ставку (мин. 70 001 ₽)"
-                                    min={ItemShow.highestBid}
+                                    min={items.highestBid}
                                     step="100"
                                 />
                                 <Button type="submit" class="btn-bid">Сделать ставку</Button>
