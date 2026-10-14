@@ -26,5 +26,5 @@ export const useItemStore = create((set) => ({
             const res = await api.getItem(id);
             set({ item: res.data });
         } catch (error) {
-            console.error("Ошибка при загрузке товара:", error); } },
+            console.error(error); } },
 }))

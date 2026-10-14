@@ -3,7 +3,7 @@ import Input from './Input'
 import { api } from '../api/api'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { useItemStore } from '../store/useItemStore'
+
 
 const CreateItem = () => {
     const [error, setError] = useState()

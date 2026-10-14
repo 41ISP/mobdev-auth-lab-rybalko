@@ -1,8 +1,7 @@
 import ItemCard from '../components/ItemCard'
 import { useEffect, useState } from 'react'
-import { api } from '../api/api'
 import { useItemStore } from '../store/useItemStore'
-import { toFormData } from 'axios'
+
 
 const ItemsList = () => {
   const { items, getItems, stats, getStats } = useItemStore()

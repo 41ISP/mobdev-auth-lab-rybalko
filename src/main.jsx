@@ -25,7 +25,6 @@ createRoot(document.getElementById("root")).render(
                       <Route path="/create-item" element={<AuthGuard> <CreateItem /> </AuthGuard>} />
                 </Route>
                 <Route path="/logout" element={<Logout />} />
-              
             </Routes>
         </BrowserRouter>
     </StrictMode>,

@@ -15,6 +15,7 @@ const ItemDetail = () => {
     const [bids, setBids] = useState([])
     const [timerId, setTimerId] = useState(undefined)
     const session = useUserStore(state => state.session)
+    const isOwner = session?.user?.id === item.userId
 
     useEffect(() => {
         const load = async () => {
@@ -65,24 +66,27 @@ const ItemDetail = () => {
             await api.createBid({ id, amount })
             form.reset()
             await api.getItems()
-        } catch (err) {
-            setError(err?.message ?? String(err))
+        } catch (error) {
+            setError(error.message|| "Something went wrong")
+            console.error(error)
+
         }
     }
 
     const handleDelete = async () => {
         try {
-            await api.deleteItems(id)
+            await api.deleteItems({id})
             await useItemStore.getState().getItems()
             navigate("/")
-        } catch (err) {
-            setError(err?.message ?? String(err))
+        } catch (error) {
+            setError(error.message|| "Something went wrong")
+            console.error(error)
         }
     }
 
     if (!item) return <div className="container">Загрузка...</div>
 
-    const isOwner = session?.user?.id === item.userId
+
 
     return (
         <div className="container">
@@ -137,7 +141,7 @@ const ItemDetail = () => {
                             </div>
 
                             {isOwner && (
-                                <Button type="button" className="btn-delete" onClick={handleDelete}>
+                                <Button onClick={handleDelete} type="button" className="btn-delete" >
                                     Удалить товар
                                 </Button>
                             )}
