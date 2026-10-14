@@ -1,28 +1,37 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Input from './Input'
 import { api } from '../api/api'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useItemStore } from '../store/useItemStore'
 
 const CreateItem = () => {
-const navigate = useNavigate()
+    const [error, setError] = useState()
+    const navigate = useNavigate()
     const handleSubmit = async (e) => {
-e.preventDefault()
+        e.preventDefault()
 
-
-
-const item = {
-title: e.target.title.value,
-description: e.target.description.value,
-price: e.target.price.value,
-imageUrl: e.target.imageUrl.value
-}
-try {
-  const data = await api.sendItem(item)
-  navigate(`/item/${data.data.id}`)
-} catch (error) {
-console.error(error)
-}
-    } 
+        const item = {
+            title: e.target.title.value,
+            description: e.target.description.value,
+            price: Number(e.target.price.value),
+            imageUrl: e.target.imageUrl?.value,
+        }
+        try {
+            const data = await api.sendItem(item)
+            navigate(`/item/${data.data.id}`)
+        } catch (error) {
+            setError(getErrorMessage(error));
+            console.error(error)
+        }
+    }
     return (
+        <>
+    {error && (
+      <div className="alert alert-error active">
+        {error}
+      </div>
+    )}
         <div className="container">
             <div class="page-header">
                 <h1>Создать новый товар</h1>
@@ -114,6 +123,7 @@ console.error(error)
                 </form>
             </div>
         </div>
+        </>
     )
 }
 

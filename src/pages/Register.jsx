@@ -3,7 +3,7 @@ import Button from '../components/Button'
 import Input from '../components/Input'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/api'
-import useUserStore from '../store/useUserStore'
+import {useUserStore} from '../store/useUserStore'
 
 const Register = () => {
     const [error, setError] = useState('')

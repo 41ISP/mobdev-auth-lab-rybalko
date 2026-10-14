@@ -1,7 +1,7 @@
 import {create} from 'zustand'
 import { createJSONStorage, persist} from 'zustand/middleware'
 
-const useUserStore = create()(persist((set) => ({
+export const useUserStore = create()(persist((set) => ({
 session: undefined,
 clearSession: function(){set({session: undefined})
 },
@@ -17,4 +17,3 @@ storage: createJSONStorage(() => localStorage),
 
 
 
-export default useUserStore
