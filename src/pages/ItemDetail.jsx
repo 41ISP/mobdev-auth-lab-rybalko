@@ -15,7 +15,7 @@ const ItemDetail = () => {
     const [bids, setBids] = useState([])
     const [timerId, setTimerId] = useState(undefined)
     const session = useUserStore(state => state.session)
-    const isOwner = session?.user?.id === item.userId
+    const [isOwner, setIsOwner] = useState(undefined)
 
     useEffect(() => {
         const load = async () => {
@@ -55,6 +55,9 @@ const ItemDetail = () => {
 
     }, [id])
 
+     useEffect(() => {
+        session && item && setIsOwner(session?.user?.id === item.userId)
+    }, [session, item])
     const handleBid = async (e) => {
         e.preventDefault()
         setError('')
@@ -137,15 +140,16 @@ const ItemDetail = () => {
                                         step="100"
                                     />
                                     <Button type="submit" className="btn-bid">Сделать ставку</Button>
-                                </form>
-                            </div>
-
-                            {isOwner && (
+                                        {isOwner && (
                                 <Button onClick={handleDelete} type="button" className="btn-delete" >
                                     Удалить товар
                                 </Button>
                             )}
 
+                                </form>
+                            </div>
+
+                        
                         </div>
                     </div>
                         <div className="bids-section">
